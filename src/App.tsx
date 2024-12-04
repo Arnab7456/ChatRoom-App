@@ -1,5 +1,4 @@
 
-import './App.css'
 import RoomChatClient from './components/JoinRoomPage'
 // import WebSocketClient from './components/WebSocketPage'
 
@@ -7,7 +6,7 @@ function App() {
 
 
   return (
-    <div>
+    <div className= " flex items-center justify-center h-screen ">
       <RoomChatClient />
       {/* <WebSocketClient /> */}
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {Button} from "./ui/Button.tsx";
 
 const RoomChatClient: React.FC = () => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
@@ -72,7 +73,8 @@ const RoomChatClient: React.FC = () => {
 
   return (
       <div className="p-4 max-w-md mx-auto">
-        <h1 className="text-2xl font-bold text-center mb-4">Room Chat</h1>
+        <h1 className="text-2xl font-bold text-center mb-4">
+          <span className="text-blue-600"> Room Chat</span> App</h1>
         {roomId && (
             <div className=" p-2 mb-4 text-center rounded border">
               <p className="text-xl font-medium">Room ID: <span className="text-blue-600 text-xl">{roomId}</span></p>
@@ -87,19 +89,10 @@ const RoomChatClient: React.FC = () => {
                   placeholder="Enter room ID"
                   className="border rounded px-4 py-2 mb-4 w-full"
               />
-              <div className="flex gap-5">
-                <button
-                    onClick={joinRoom}
-                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                >
-                  Join Room
-                </button>
-                <button
-                    onClick={createRoom}
-                    className="bg-purple-500 text-white px-4 py-2 rounded  hover:bg-purple-600"
-                >
-                  Create Room
-                </button>
+              <div className="flex justify-center items-center gap-2 ">
+
+                <Button onClick={joinRoom} size="md" variant="primary" title="Join the room" />
+                <Button onClick={createRoom} size='md' variant="secondary"  title="create a new room" />
               </div>
 
             </div>
