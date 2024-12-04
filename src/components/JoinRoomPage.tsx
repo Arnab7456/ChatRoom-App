@@ -8,7 +8,12 @@ const RoomChatClient: React.FC = () => {
   const [inputMessage, setInputMessage] = useState<string>("");
 
   useEffect(() => {
-    const ws = new WebSocket("ws://chat-backend-production-90ea.up.railway.app");
+    // Use 'wss' for secure WebSocket connection
+    const wsUrl = window.location.protocol === 'https:'
+        ? "wss://chat-backend-production-90ea.up.railway.app"
+        : "ws://chat-backend-production-90ea.up.railway.app";
+
+    const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
       console.log("Connected to WebSocket server.");
@@ -104,11 +109,9 @@ const RoomChatClient: React.FC = () => {
                 {messages.map((msg, index) => (
                     <div
                         key={index}
-                        className={`mb-2 flex ${
-                            index % 2 === 0 ? "justify-start" : "justify-end"
-                        }`}
+                        className={`mb-2 flex ${index % 2 === 0 ? "justify-start" : "justify-end"}`}
                     >
-                    <p
+                      <p
                           className={`px-4 py-2 rounded-lg ${
                               index % 2 === 0
                                   ? "text-gray-200 bg-gray-800 border border-gray-600"
