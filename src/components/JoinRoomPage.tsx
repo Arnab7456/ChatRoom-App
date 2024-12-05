@@ -108,20 +108,17 @@ const RoomChatClient: React.FC = () => {
 
   return (
       <motion.div
-          className="flex flex-col justify-center items-center p-4 max-w-md mx-auto h-[35rem]"
-          initial={{opacity: 0, scale: 0.95}}
-          animate={{opacity: 1, scale: 1}}
-          transition={{duration: 0.5}}
+          className="flex flex-col justify-center items-center p-4 w-full max-w-lg mx-auto h-screen md:h-[35rem]"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
       >
-        <h1 className="text-2xl font-bold text-center mb-5">
-          <span className="text-blue-600">Room Chat</span> App
-        </h1>
         {!joined ? (
             <motion.div
-                className="flex flex-col items-center"
-                initial={{y: 50, opacity: 0}}
-                animate={{y: 0, opacity: 1}}
-                transition={{duration: 0.5}}
+                className="flex flex-col items-center w-full"
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
             >
               <motion.input
                   type="text"
@@ -130,9 +127,9 @@ const RoomChatClient: React.FC = () => {
                   placeholder="Enter room ID (5 chars)"
                   maxLength={5}
                   className="border rounded px-4 py-2 mb-4 w-full text-black font-sans"
-                  whileFocus={{scale: 1.05}}
+                  whileFocus={{ scale: 1.05 }}
               />
-              <div className="flex justify-center items-center gap-2">
+              <div className="flex flex-wrap justify-center items-center gap-2">
                 <Button
                     onClick={joinRoom}
                     size="md"
@@ -150,25 +147,24 @@ const RoomChatClient: React.FC = () => {
         ) : (
             <>
               <motion.div
-                  className="p-2 mb-4 text-center rounded border"
-                  initial={{y: -20, opacity: 0}}
-                  animate={{y: 0, opacity: 1}}
+                  className="p-2 mb-4 text-center rounded border w-full"
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
               >
                 <p className="text-xl font-medium">
                   Room ID: <span className="text-blue-600 text-xl">{roomId}</span>
                 </p>
               </motion.div>
-              <div
-                  className="h-[70%] flex flex-col gap-4 relative w-[130%] border-2 border-gray-400 rounded overflow-y-scroll p-2">
+              <div className="h-[60%] md:h-[70%] w-full flex flex-col gap-4 relative border-2 border-gray-400 rounded overflow-y-scroll p-2">
                 {messages.map((msg) => (
                     <motion.div
                         key={msg.id}
                         className={`mb-2 flex ${
                             msg.isSelf ? "justify-end" : "justify-start"
                         }`}
-                        initial={{scale: 0.8, opacity: 0}}
-                        animate={{scale: 1, opacity: 1}}
-                        transition={{duration: 0.3}}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.3 }}
                     >
                       <p
                           className={`px-4 py-2 rounded-lg ${
@@ -183,24 +179,24 @@ const RoomChatClient: React.FC = () => {
                 ))}
               </div>
               <motion.div
-                  className="mt-4 flex justify-center items-center"
-                  initial={{y: 20, opacity: 0}}
-                  animate={{y: 0, opacity: 1}}
+                  className="mt-4 flex flex-col sm:flex-row justify-center items-center w-full"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
               >
                 <motion.textarea
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     placeholder="Type your message..."
-                    className="w-full max-w-md border border-gray-300 rounded-lg px-4 py-3 mr-2 text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans resize-none overflow-auto"
+                    className="w-full sm:w-4/5 border border-gray-300 rounded-lg px-4 py-3 mr-2 text-gray-900 placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-sans resize-none overflow-auto"
                     rows={1}
-                    whileFocus={{scale: 1.02}}
+                    whileFocus={{ scale: 1.02 }}
                 />
                 <Button
                     variant="primary"
                     title="Send"
                     size="md"
                     onClick={sendMessage}
-                    endIcon={<SendIcons size="md"/>}
+                    endIcon={<SendIcons size="md" />}
                 />
               </motion.div>
             </>
