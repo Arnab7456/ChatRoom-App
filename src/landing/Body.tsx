@@ -7,7 +7,7 @@ export default function Body() {
     return (
         <div className="flex flex-col justify-center items-center h-[35rem] px-4">
             <div className="text-4xl font-normal text-neutral-600 dark:text-neutral-400 text-center">
-                Build <FlipWords words={words} /> <br />
+                Welcome to <FlipWords words={words} /> <br />
                 ChatApp  using for seamless communication
             </div>
             <Link to="/chat">
