@@ -1,49 +1,42 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
-import { Button } from "./ui/Button.tsx";
-import SendIcons from "./ui/Icons/SendIcons.tsx";
-import { motion } from "framer-motion";
-
-interface Message {
-  id: string;
-  text: string;
-  isSelf: boolean;
-}
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store/srore.ts';
+import { addMessage } from '../store/messageSlice.ts';
+import { Button } from './ui/Button.tsx';
+import SendIcons from './ui/Icons/SendIcons.tsx';
+import { motion } from 'framer-motion';
 
 const RoomChatClient: React.FC = () => {
   const { roomId: urlRoomId } = useParams<{ roomId: string }>();
-  const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [roomId, setRoomId] = useState<string>(urlRoomId || "");
-  const [joined, setJoined] = useState<boolean>(!!urlRoomId);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState<string>("");
+  const dispatch: AppDispatch = useDispatch();
+  const messages = useSelector((state: RootState) => state.messages.messages);
 
-  const addMessage = useCallback((message: Omit<Message, "id">) => {
-    const newMessage: Message = {
-      id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      ...message,
-    };
-    setMessages((prev) => {
-      const isDuplicate = prev.some(
-          (msg) => msg.text === newMessage.text && msg.isSelf === newMessage.isSelf
-      );
-      return isDuplicate ? prev : [...prev, newMessage];
-    });
-  }, []);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [roomId, setRoomId] = useState<string>(urlRoomId || '');
+  const [joined, setJoined] = useState<boolean>(!!urlRoomId);
+  const [inputMessage, setInputMessage] = useState<string>('');
+
+  const addMessageToStore = useCallback(
+      (message: Omit<Message, 'id'>) => {
+        dispatch(addMessage(message));
+      },
+      [dispatch]
+  );
 
   useEffect(() => {
     const wsUrl =
-        window.location.protocol === "https:"
-            ? "wss://chat-backend-production-90ea.up.railway.app"
-            : "ws://chat-backend-production-90ea.up.railway.app";
+        window.location.protocol === 'https:'
+            ? 'wss://chat-backend-production-90ea.up.railway.app'
+            : 'ws://chat-backend-production-90ea.up.railway.app';
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
-      console.log("Connected to WebSocket server.");
+      console.log('Connected to WebSocket server.');
       if (urlRoomId) {
         ws.send(
             JSON.stringify({
-              type: "join",
+              type: 'join',
               payload: { roomId: urlRoomId },
             })
         );
@@ -54,18 +47,18 @@ const RoomChatClient: React.FC = () => {
       try {
         const data = JSON.parse(event.data);
         switch (data.type) {
-          case "chat":
-            addMessage({
+          case 'chat':
+            addMessageToStore({
               text: data.payload.message,
               isSelf: data.payload.isSelf,
             });
             break;
-          case "join_confirmation":
+          case 'join_confirmation':
             setJoined(true);
             break;
         }
       } catch (error) {
-        console.error("Error parsing message:", error);
+        console.error('Error parsing message:', error);
       }
     };
 
@@ -76,13 +69,13 @@ const RoomChatClient: React.FC = () => {
         ws.close();
       }
     };
-  }, [urlRoomId, addMessage]);
+  }, [urlRoomId, addMessageToStore]);
 
   const joinRoom = () => {
     if (socket && roomId.trim()) {
       socket.send(
           JSON.stringify({
-            type: "join",
+            type: 'join',
             payload: { roomId },
           })
       );
@@ -98,11 +91,11 @@ const RoomChatClient: React.FC = () => {
     if (socket && inputMessage.trim()) {
       socket.send(
           JSON.stringify({
-            type: "chat",
+            type: 'chat',
             payload: { message: inputMessage },
           })
       );
-      setInputMessage("");
+      setInputMessage('');
     }
   };
 
@@ -160,7 +153,7 @@ const RoomChatClient: React.FC = () => {
                     <motion.div
                         key={msg.id}
                         className={`mb-2 flex ${
-                            msg.isSelf ? "justify-end" : "justify-start"
+                            msg.isSelf ? 'justify-end' : 'justify-start'
                         }`}
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
@@ -169,8 +162,8 @@ const RoomChatClient: React.FC = () => {
                       <p
                           className={`px-4 py-2 rounded-lg ${
                               msg.isSelf
-                                  ? "text-white bg-blue-600 border border-blue-400"
-                                  : "text-black bg-slate-100 border border-gray-600"
+                                  ? 'text-white bg-blue-600 border border-blue-400'
+                                  : 'text-black bg-slate-100 border border-gray-600'
                           }`}
                       >
                         {msg.text}
