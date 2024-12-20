@@ -6,6 +6,8 @@ import { addMessage } from '../store/messageSlice.ts';
 import { Button } from './ui/Button.tsx';
 import SendIcons from './ui/Icons/SendIcons.tsx';
 import { motion } from 'framer-motion';
+import { Message } from '../store/messageSlice';
+
 
 const RoomChatClient: React.FC = () => {
   const { roomId: urlRoomId } = useParams<{ roomId: string }>();

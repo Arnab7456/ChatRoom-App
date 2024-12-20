@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Message {
+export interface Message {
     id: string;
     text: string;
     isSelf: boolean;
 }
+
 
 interface MessageState {
     messages: Message[];
